@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\HomeController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,4 +21,10 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::middleware(['auth'])->group(function() {
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::post('/create', [HomeController::class,'Create'])->name('create');
+    Route::get('/employee-form', [HomeController::class,'Form'])->name('employee-form');
+    Route::post('email-validate', [HomeController::class, 'checkEmail'])->name('checkEmail');
+    Route::post('delete', [HomeController::class, 'deleteEmployee'])->name('delete-employee');
+});
